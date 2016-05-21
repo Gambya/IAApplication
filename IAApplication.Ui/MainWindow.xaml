@@ -4,9 +4,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IAApplication.Ui"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        mc:Ignorable="d" Height="600" Width="800" Title="IAApplication" WindowState="Maximized">
     <Grid>
-        
+        <Menu x:Name="menu" Margin="0,0,0,547">
+            <MenuItem Header="_Implementação" FontStretch="UltraCondensed" FontFamily="Sugoe" InputGestureText="Alt+I" >
+                <MenuItem.ToolTip>
+                    <ToolTip>Selecione a implementação que deseja utilizar</ToolTip>
+                </MenuItem.ToolTip>
+                <MenuItem Header="_K-Means" FontStretch="UltraCondensed" FontFamily="Sugoe">
+                    <MenuItem.ToolTip>
+                        <ToolTip>Utilize o processamento K-Means</ToolTip>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="_Sons" FontStretch="UltraCondensed" FontFamily="Sugoe">
+                    <MenuItem.ToolTip>
+                        <ToolTip>Utilize o processamento de Sons</ToolTip>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Normalização" FontStretch="UltraCondensed" FontFamily="Sugoe" Click="MenuNormalizationClick">
+                <MenuItem.ToolTip>
+                    <ToolTip>Normalizar Base de dados a serem utilizadas</ToolTip>
+                </MenuItem.ToolTip>
+            </MenuItem>
+        </Menu>
+
     </Grid>
 </Window>

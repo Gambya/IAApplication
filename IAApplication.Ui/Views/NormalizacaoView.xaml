@@ -1,0 +1,16 @@
+﻿<Window x:Class="IAApplication.Ui.Views.NormalizacaoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IAApplication.Ui.Views"
+        xmlns:ViewModels="clr-namespace:IAApplication.Ui.ViewModels"
+        mc:Ignorable="d"
+        Title="Seleção de Base de Dados a Ser Normalizada" Height="165.441" Width="459.927">
+    <Grid DataContext="{DynamicResource NormalizacaoViewModel}">
+        <Label x:Name="label" Content="Selecione Base:" HorizontalAlignment="Left" Margin="12,22,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtBase" HorizontalAlignment="Left" Height="23" Margin="12,53,0,0" TextWrapping="Wrap" Text="{Binding PathBase,Mode=TwoWay}" VerticalAlignment="Top" Width="302" ToolTip="Selecione arquivo com base de dados"/>
+        <Button x:Name="btnSelectBase" Content="Browser" HorizontalAlignment="Left" Margin="319,53,0,0" VerticalAlignment="Top" Width="123" Height="23" Click="btnSelectBase_Click"/>
+        <Button x:Name="btnConfirma" Content="Confirma" HorizontalAlignment="Left" Margin="319,94,0,0" VerticalAlignment="Top" Width="123" Height="23"/>
+    </Grid>
+</Window>

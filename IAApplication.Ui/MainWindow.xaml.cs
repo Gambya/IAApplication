@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IAApplication.Helpers;
+using IAApplication.Ui.Views;
 
 namespace IAApplication.Ui
 {
@@ -20,9 +22,16 @@ namespace IAApplication.Ui
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string pathBase = string.Empty;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MenuNormalizationClick(object sender, RoutedEventArgs e)
+        {
+            var normalizeView = new NormalizacaoView();
+            normalizeView.Show();
         }
     }
 }
