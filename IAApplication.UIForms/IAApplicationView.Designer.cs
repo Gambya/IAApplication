@@ -34,6 +34,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.implementaçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kMeansToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cadastrarCentróidesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rodarKMeansToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.somKohoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalizaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,15 +67,33 @@
             // 
             // kMeansToolStripMenuItem
             // 
+            this.kMeansToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cadastrarCentróidesToolStripMenuItem,
+            this.rodarKMeansToolStripMenuItem});
             this.kMeansToolStripMenuItem.Name = "kMeansToolStripMenuItem";
             this.kMeansToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.kMeansToolStripMenuItem.Text = "KMeans";
+            // 
+            // cadastrarCentróidesToolStripMenuItem
+            // 
+            this.cadastrarCentróidesToolStripMenuItem.Name = "cadastrarCentróidesToolStripMenuItem";
+            this.cadastrarCentróidesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.cadastrarCentróidesToolStripMenuItem.Text = "Cadastrar Centróides";
+            this.cadastrarCentróidesToolStripMenuItem.Click += new System.EventHandler(this.cadastrarCentróidesToolStripMenuItem_Click);
+            // 
+            // rodarKMeansToolStripMenuItem
+            // 
+            this.rodarKMeansToolStripMenuItem.Name = "rodarKMeansToolStripMenuItem";
+            this.rodarKMeansToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.rodarKMeansToolStripMenuItem.Text = "Selecionar Base";
+            this.rodarKMeansToolStripMenuItem.Click += new System.EventHandler(this.rodarKMeansToolStripMenuItem_Click);
             // 
             // somKohoToolStripMenuItem
             // 
             this.somKohoToolStripMenuItem.Name = "somKohoToolStripMenuItem";
             this.somKohoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.somKohoToolStripMenuItem.Text = "SOM/Kohonen";
+            this.somKohoToolStripMenuItem.Click += new System.EventHandler(this.somKohoToolStripMenuItem_Click);
             // 
             // normalizaçãoToolStripMenuItem
             // 
@@ -86,7 +106,7 @@
             // minMaxToolStripMenuItem
             // 
             this.minMaxToolStripMenuItem.Name = "minMaxToolStripMenuItem";
-            this.minMaxToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.minMaxToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.minMaxToolStripMenuItem.Text = "Min-Max";
             this.minMaxToolStripMenuItem.Click += new System.EventHandler(this.minMaxToolStripMenuItem_Click);
             // 
@@ -105,7 +125,7 @@
             this.chPoints.Location = new System.Drawing.Point(0, 27);
             this.chPoints.Name = "chPoints";
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chPoints.Series.Add(series1);
@@ -150,6 +170,8 @@
         private System.Windows.Forms.ToolStripMenuItem minMaxToolStripMenuItem;
         private System.Windows.Forms.DataVisualization.Charting.Chart chPoints;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripMenuItem cadastrarCentróidesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rodarKMeansToolStripMenuItem;
     }
 }
 

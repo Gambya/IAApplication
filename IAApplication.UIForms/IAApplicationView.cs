@@ -10,54 +10,39 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IAApplication.Domain.Services;
 using IAApplication.UIForms.Views;
 using IAApplication.Helpers;
+using IAApplication.Infra.IA.Services;
+using IAApplication.Domain.Entities;
 
 namespace IAApplication.UIForms
 {
     public partial class IAApplicationView : Form
     {
         public string PathBase { get; set; }
+        public List<Centroide> BaseCentroides;
+        public List<Objetos> BaseObjetos;
         public IAApplicationView()
         {
             InitializeComponent();
+            BaseCentroides = new List<Centroide>();
+            BaseObjetos = new List<Objetos>();
         }
 
         private void minMaxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             var normaMinMaxView = new NormalizacaoMinMaxView(this);
             normaMinMaxView.Show();
         }
+
         #region "Normalização"
         public void NormalizarBase()
         {
-            var strBuilderDado = new StringBuilder();
-            var listaDados = new List<double>();
-            if (!File.Exists(PathBase)) return;
-            using (var stream = new StreamReader(PathBase))
+            var strBuilderDado = Normalization.NormalizarBase(PathBase);
+            if (!SalvarArquivo(strBuilderDado))
             {
-                var strFile = Regex.Replace(stream.ReadToEnd(), Environment.NewLine, ",");
-                listaDados.AddRange(strFile.Split(',').ToList().ConvertAll(new Converter<string, double>(ConvertToDouble)));
-            }
-            using (var stream = new StreamReader(PathBase))
-            {
-                string line;
-                while ((line = stream.ReadLine()) != null)
-                {
-                    var dados = line.Split(',').ToList().ConvertAll(new Converter<string,double>(ConvertToDouble));
-                    foreach (var dado in dados)
-                    {
-                        strBuilderDado.Append($"{Normalization.NormalizeToMinMax(dado, listaDados)}".Replace(",","."));
-                        strBuilderDado.Append(",");
-                    }
-                    strBuilderDado.Remove(strBuilderDado.Length - 1, 1);
-                    strBuilderDado.AppendLine();
-                }
-                if (!SalvarArquivo(strBuilderDado))
-                {
-                    //informar na barra de status
-                }
+                //informar na barra de status
             }
             MessageBox.Show(this, $"Base {PathBase} normalizada com MinMax.", @"Situação", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -69,7 +54,7 @@ namespace IAApplication.UIForms
                 // Cria o OpenFileDialog
                 var saveFileDialog = new SaveFileDialog();
                 //Exibi a janela para busca de arquivos
-                var dialogResult = saveFileDialog.ShowDialog();
+                saveFileDialog.ShowDialog();
                 // Retorna o path do arquivo selecionado para a variavel CaminhoDoArquivo
                 PathBase = saveFileDialog.FileName;
                 File.WriteAllText(PathBase, strBuilderDado.ToString());
@@ -81,13 +66,29 @@ namespace IAApplication.UIForms
                 return false;
             }
         }
+        #endregion
 
-        private static double ConvertToDouble(string input)
+        private void somKohoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Regex.IsMatch(input, @"^\."))
-                input = input.Replace(".", "0,");
-            input = input.Replace(".", ",");
-            return Convert.ToDouble(input);
+
+        }
+        #region "KMeans"
+        private void cadastrarCentróidesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var kmeansView = new KMeansView(this);
+            kmeansView.Show();
+        }
+        private void rodarKMeansToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Cria o OpenFileDialog
+            var openFileDialog = new OpenFileDialog();
+            //Exibi a janela para busca de arquivos
+            openFileDialog.ShowDialog();
+            // Retorna o path do arquivo selecionado para a variavel CaminhoDoArquivo
+            var baseDados = openFileDialog.FileName;
+            IKMeanService kService = new KMeanService();
+            BaseObjetos = kService.LerDados(baseDados);
+            kService.KMeansRun(BaseObjetos, BaseCentroides);
         }
         #endregion
     }

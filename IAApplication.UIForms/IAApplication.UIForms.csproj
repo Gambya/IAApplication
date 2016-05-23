@@ -55,6 +55,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\KMeansView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\KMeansView.Designer.cs">
+      <DependentUpon>KMeansView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\NormalizacaoMinMaxView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +79,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\KMeansView.resx">
+      <DependentUpon>KMeansView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\NormalizacaoMinMaxView.resx">
       <DependentUpon>NormalizacaoMinMaxView.cs</DependentUpon>
     </EmbeddedResource>
@@ -90,9 +99,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IAApplication.Domain\IAApplication.Domain.csproj">
+      <Project>{d4c01a53-1134-4246-91be-c3f543e35b14}</Project>
+      <Name>IAApplication.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IAApplication.Helpers\IAApplication.Helpers.csproj">
       <Project>{5dcdaab7-c9de-42d2-b6b1-74ad4daafb89}</Project>
       <Name>IAApplication.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IAApplication.Infra.IA\IAApplication.Infra.IA.csproj">
+      <Project>{F7A6DCCD-797C-40BE-8E93-AF1B5BB62B3A}</Project>
+      <Name>IAApplication.Infra.IA</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
