@@ -11,6 +11,12 @@ namespace IAApplication.Infra.IA.Services
     public class Som : ISomService
     {
         private double[][] dados;
+        private double[][][] dadosPesos;
+        /// <summary>
+        /// Ler arquivo e carrega array multidimensional com os dados por linha e coluna
+        /// </summary>
+        /// <param name="pathBase">caminho do arquivo</param>
+        /// <returns>retorna um array multidimensional de double</returns>
         public double[][] LerDados(string pathBase)
         {
             using (var stream = new StreamReader(pathBase))
@@ -29,10 +35,24 @@ namespace IAApplication.Infra.IA.Services
             }
             return dados;
         }
-
-        public IEnumerable<double> CarregarPesos()
+        /// <summary>
+        /// Efetuar o carregamento de array de dados com seus respectivos pesos
+        /// </summary>
+        /// <returns>retorna um double multidimensional</returns>
+        private double[][][] CarregarPesos()
         {
-            throw new System.NotImplementedException();
+            for (var i = 0; i < dados.Length; i++)
+            {
+                for (var j = 0; j < dados[i].Length; j++)
+                {
+                    for (var k = 0; k < dadosPesos[i][j].Length; k++)
+                    {
+                        var rnd = new Random(int.MaxValue);
+                        dadosPesos[i][j][k] = rnd.NextDouble();
+                    }
+                }
+            }
+            return dadosPesos;
         }
 
         public double CalcularDistanciaEuclidiana()
