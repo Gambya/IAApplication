@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml;
 using IAApplication.Domain.Entities;
@@ -14,9 +15,10 @@ namespace IAApplication.Infra.IA.Services
 {
     public class KMeanService : IKMeanService
     {
-        public List<Centroide> KMeansRun(List<Objetos> groupObjects, List<Centroide> groupCentroides)
+        public void KMeansRun(List<Objetos> groupObjects, List<Centroide> groupCentroides)
         {
             var distancias = new List<dynamic>();
+            var condicaoParada = true;
             do
             {
                 for (var i = 0; i < groupObjects.Count; i++)
@@ -37,12 +39,21 @@ namespace IAApplication.Infra.IA.Services
                     groupCentroides[vencedor].Objects.Add(groupObjects[i]);
                     distancias.Clear();
                 }
-                RecalcularCentroides(ref groupCentroides);
-            } while (true);
+                var resultadoCentroides = RecalcularCentroides(ref groupCentroides);
+                for (var i =0;i< resultadoCentroides.Count;i++)
+                {
+                    if (resultadoCentroides[i].X == groupCentroides[i].X &&
+                        resultadoCentroides[i].Y == groupCentroides[i].Y)
+                    {
+                        condicaoParada = false;
+                    }
+                }
+            } while (condicaoParada);
         }
 
-        private void RecalcularCentroides(ref List<Centroide> groupCentroides)
+        private List<Centroide> RecalcularCentroides(ref List<Centroide> groupCentroides)
         {
+            var retorno = new List<Centroide>();
             var mediaX = new double();
             var mediaY = new double();
             for (var i = 0; i < groupCentroides.Count; i++)
@@ -60,8 +71,11 @@ namespace IAApplication.Infra.IA.Services
                     groupCentroides[i].Y = mediaY;
                     mediaX = mediaY = 0.00;
                 }
+                retorno.Add(groupCentroides[i]);
                 groupCentroides[i].Objects.Clear();
             }
+
+            return retorno;
         }
 
         public List<Objetos> LerDados(string pathBase)

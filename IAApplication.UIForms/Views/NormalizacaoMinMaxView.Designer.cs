@@ -33,13 +33,15 @@
             this.btnBrowser = new System.Windows.Forms.Button();
             this.btnConfirma = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.txtClasse = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtPath
             // 
             this.txtPath.Location = new System.Drawing.Point(12, 34);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(408, 20);
+            this.txtPath.Size = new System.Drawing.Size(206, 20);
             this.txtPath.TabIndex = 0;
             // 
             // label1
@@ -55,9 +57,9 @@
             // btnBrowser
             // 
             this.btnBrowser.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnBrowser.Location = new System.Drawing.Point(426, 34);
+            this.btnBrowser.Location = new System.Drawing.Point(224, 34);
             this.btnBrowser.Name = "btnBrowser";
-            this.btnBrowser.Size = new System.Drawing.Size(75, 20);
+            this.btnBrowser.Size = new System.Drawing.Size(100, 20);
             this.btnBrowser.TabIndex = 2;
             this.btnBrowser.Text = "Browser";
             this.btnBrowser.UseVisualStyleBackColor = true;
@@ -66,7 +68,7 @@
             // btnConfirma
             // 
             this.btnConfirma.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnConfirma.Location = new System.Drawing.Point(392, 88);
+            this.btnConfirma.Location = new System.Drawing.Point(216, 77);
             this.btnConfirma.Name = "btnConfirma";
             this.btnConfirma.Size = new System.Drawing.Size(109, 23);
             this.btnConfirma.TabIndex = 3;
@@ -77,7 +79,7 @@
             // btnCancelar
             // 
             this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancelar.Location = new System.Drawing.Point(277, 88);
+            this.btnCancelar.Location = new System.Drawing.Point(97, 77);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(109, 23);
             this.btnCancelar.TabIndex = 4;
@@ -85,11 +87,29 @@
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
+            // txtClasse
+            // 
+            this.txtClasse.Location = new System.Drawing.Point(12, 77);
+            this.txtClasse.Name = "txtClasse";
+            this.txtClasse.Size = new System.Drawing.Size(79, 20);
+            this.txtClasse.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 61);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Posição Classe:";
+            // 
             // NormalizacaoMinMaxView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(513, 129);
+            this.ClientSize = new System.Drawing.Size(337, 113);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtClasse);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnConfirma);
             this.Controls.Add(this.btnBrowser);
@@ -113,5 +133,7 @@
         private System.Windows.Forms.Button btnBrowser;
         private System.Windows.Forms.Button btnConfirma;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.TextBox txtClasse;
+        private System.Windows.Forms.Label label2;
     }
 }

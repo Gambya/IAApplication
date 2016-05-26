@@ -23,6 +23,7 @@ namespace IAApplication.UIForms
         public string PathBase { get; set; }
         public List<Centroide> BaseCentroides;
         public List<Objetos> BaseObjetos;
+        public int PosicaoClasse;
         public IAApplicationView()
         {
             InitializeComponent();
@@ -30,16 +31,18 @@ namespace IAApplication.UIForms
             BaseObjetos = new List<Objetos>();
         }
 
+        #region "Normalização"
         private void minMaxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var normaMinMaxView = new NormalizacaoMinMaxView(this);
             normaMinMaxView.Show();
         }
 
-        #region "Normalização"
         public void NormalizarBase()
         {
-            var strBuilderDado = Normalization.NormalizarBase(PathBase);
+            //Envio do caminho da base, posição da classe
+            var strBuilderDado = Normalization.NormalizarBase(PathBase, PosicaoClasse);
+            //Salvar arquivo com dados já normalizados
             if (!SalvarArquivo(strBuilderDado))
             {
                 //informar na barra de status
@@ -57,6 +60,7 @@ namespace IAApplication.UIForms
                 saveFileDialog.ShowDialog();
                 // Retorna o path do arquivo selecionado para a variavel CaminhoDoArquivo
                 PathBase = saveFileDialog.FileName;
+                //Grava os dados no arquivo informado no pathbase
                 File.WriteAllText(PathBase, strBuilderDado.ToString());
                 return true;
             }
@@ -68,10 +72,12 @@ namespace IAApplication.UIForms
         }
         #endregion
 
+        #region "SOM/Kohonen"
         private void somKohoToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
+        #endregion
         #region "KMeans"
         private void cadastrarCentróidesToolStripMenuItem_Click(object sender, EventArgs e)
         {

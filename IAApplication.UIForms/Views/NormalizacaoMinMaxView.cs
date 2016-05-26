@@ -34,6 +34,7 @@ namespace IAApplication.UIForms.Views
         private void btnConfirma_Click(object sender, EventArgs e)
         {
             main.PathBase = txtPath.Text;
+            main.PosicaoClasse = Convert.ToInt32(txtClasse.Text);
             main.NormalizarBase();
             this.Close();
         }
