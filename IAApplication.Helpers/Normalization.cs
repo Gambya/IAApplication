@@ -69,7 +69,11 @@ namespace IAApplication.Helpers
             }
             return listaDados;
         }
-
+        /// <summary>
+        /// Conversor de string para double
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private static double ConvertToDouble(string input)
         {
             if (Regex.IsMatch(input, @"^\."))
