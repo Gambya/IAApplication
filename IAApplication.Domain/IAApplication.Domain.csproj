@@ -45,8 +45,6 @@
     <Compile Include="Entities\Objetos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IKMeanService.cs" />
-    <Compile Include="Services\IRedeNeuralService.cs" />
-    <Compile Include="Services\ISomService.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

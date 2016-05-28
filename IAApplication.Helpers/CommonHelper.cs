@@ -9,5 +9,10 @@ namespace IAApplication.Helpers
         {
             return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 + y1), 2));
         }
+
+        public static double CalcularDistanciaEuclidiana(double x, double w)
+        {
+            return Math.Sqrt(x - w);
+        }
     }
 }
