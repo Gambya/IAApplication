@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IAApplication.Infra.IA")]
+[assembly: AssemblyTitle("NewSom")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("IAApplication.Infra.IA")]
+[assembly: AssemblyProduct("NewSom")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f7a6dccd-797c-40be-8e93-af1b5bb62b3a")]
+[assembly: Guid("e802956e-0c39-489a-b00a-434864533ac3")]
 
 // Version information for an assembly consists of the following four values:
 //
