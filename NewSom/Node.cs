@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace NewSom
+namespace SomNK
 {
-    public class Node
+    /// <summary>
+    /// Classe responsável por armazenar os valores de entrada do data.txt
+    /// </summary>
+    class Node
     {
-        public int linha { get; set; }
-        public Node Vencedor { get; set; }
+        // array para armazenar os valores lidos por linha
         public double[] valores { get; set; }
-        public double[] peso { get; set; }
-        public double[] distancia { get; set; }
-        public List<int> Vizinhos { get; set; }
+        // inteiro armazenando a ordem da linha para facilitar o acompanhamento
+        public int ordem { get; set; }
     }
 }

@@ -6,121 +6,129 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace NewSom
+namespace SomNK
 {
     class Program
     {
-        public static double taxaAprendizado = 5;
-        public const int Raio = 1;
+        #region Variáveis Statics
+
+        public static double Raio = 1;          // Valor do Raio
+        public static int k = 3;                // Quantidade de Neurônios
+        public static List<Node> Nodes;         // Lista de Nodes
+        public static List<Neuronio> Neuronios; // Lista de Neurônios
+        public static double alfa = 1.651;      // Valor da taxa de aprendizado
+
+        #endregion Variáveis Statics
 
         static void Main(string[] args)
         {
+            string dadosPath = Environment.CurrentDirectory + "\\data.txt";     // Endereço do arquivo com os dados para a aprendizagem
+            int epocas = 100;                                                   // Quantidade de épocas
+            StreamWriter sw = new StreamWriter(Environment.CurrentDirectory + "\\acompanhamento.txt", false);   // Stream Reader para acompanhamento
 
-            List<Node> ListNode = new List<Node>();
-            StreamReader sr = new StreamReader(Environment.CurrentDirectory + @"\data.txt");
-            int line = 0;
-            int epocas = 10;
-            Random rnd = new Random(1);
+            Nodes = PreencherNodes(dadosPath);  // Preenchendo a Lista de Nodes
+            Neuronios = PreencherNeuronios();   // Preenchendo a Lista de Neuronios
 
-            while (!sr.EndOfStream)
-            {
-                var node = new Node();
-                node.valores = sr.ReadLine().Split(';').ToList().ConvertAll(new Converter<string, double>(ConvertToDouble)).ToArray();
-                node.linha = line;
-                node.peso = new double[node.valores.Length];
-                for (int i = 0; i < node.valores.Length; i++)
-                {
-                    node.peso[i] = rnd.NextDouble();
-                }
-                node.Vizinhos = new List<int>();
-                ListNode.Add(node);
-                line++;
-            }
-
+            /// For utilizado para percorrer as épocas
             for (int epoca = 0; epoca < epocas; epoca++)
             {
-                for (int i = 0; i < ListNode.Count; i++)
+                /// For utilizado para percorrer todos os Nodes
+                for (int node = 0; node < Nodes.Count; node++)
                 {
-                    ListNode[i].distancia = new double[line];
-                    double menor = 100;
-                    int index = 0;
-                    for (int j = i + 1; j < ListNode.Count - 1; j++)
+                    double menor = 9999999; // Variável menor sendo criado com valor extremo, facilitando a troca de valores
+                    int index = 9;          // Valor da index que armazenará o índice do Neurônio
+                    /// For utilizado para percorrer todos os neurônios
+                    for (int neuronio = 0; neuronio < Neuronios.Count; neuronio++)
                     {
-                        ListNode[i].distancia[j] = DistanciaEuclidiana(ListNode[i], ListNode[j]);
-                        if (ListNode[i].distancia[j] < menor)
-                        {
-                            menor = ListNode[i].distancia[j];
-                            index = j;
+                        var temp = DistanciaEuclidiana(Nodes[node], Neuronios[neuronio]); // variável para armazenar o valor da distância euclidiana
+                        if (temp < menor) // caso o temp seja menor que o valor atual da variável menor
+                        {                 // irá armazenar o valor atual e pegar o índice do neurônio
+                            menor = temp;
+                            index = neuronio;
                         }
-
                     }
-                    ListNode[i].Vencedor = ListNode[index];
-                    ListNode[index].Vizinhos = EncontrarVizinhos(ListNode[index], ListNode);
-                    ListNode[index] = AtualizarPesos(ListNode[index]);
-                    foreach (int vizinho in ListNode[index].Vizinhos)
-                    {
-                        ListNode[vizinho] = AtualizarPesos(ListNode[vizinho]);
-                    }
-                    ListNode[index].Vizinhos.Clear();
+                    Neuronios[index].vizinhos.Add(Nodes[node]);  //Adiciona o Node atual a vizinhança do  neurônio vencedor
+                    AtualizarPesos(Neuronios[index], Nodes[node]);  // Atualiza os pesos do Neurônio vencedor
                 }
-                taxaAprendizado *= 0.5;
-            }
-
-            List<int> ListaTeste = new List<int>();
-
-            for (int i = 0; i < ListNode.Count; i++)
-            {
-                if (!ListaTeste.Contains(i))
+                sw.WriteLine("Impressão da época " + epoca + Environment.NewLine); // Imprime a época 
+                /// For utilizado para percorrer os neurônios e imprimir sua vizinhança na determianda época
+                for (int i = 0; i < Neuronios.Count; i++)
                 {
-                    ListNode[i].Vizinhos = EncontrarVizinhos(ListNode[i], ListNode);
-                    ListNode[i].Vizinhos.RemoveAll(c => ListaTeste.Contains(c));
-                    Console.Write("Vizinhos do Node " + i + ": {");
-                    ListNode[i].Vizinhos.ForEach(c => Console.Write(c + ", "));
-                    Console.WriteLine("}" + Environment.NewLine);
-                    ListaTeste.AddRange(ListNode[i].Vizinhos);
+                    //Neuronios[i].vizinhos = EncontrarVizinhos(Neuronios[i]);
+                    Neuronios[i].vizinhos.ForEach(c => sw.Write(c.ordem + ","));
+                    sw.WriteLine();
+                    Neuronios[i].vizinhos.Clear();
                 }
+                sw.WriteLine(Environment.NewLine);
+                alfa *= 0.5; // Atualiza o valor da taxa de aprendizado
             }
-            Console.ReadKey();
+            /// Fecha o StreamWriter
+            sw.Close();
         }
 
-        public static Node AtualizarPesos(Node node)
+        /// <summary>
+        /// Método responsável para encontrar os vizinhos do Neurônio
+        /// </summary>
+        /// <param name="neuronio"></param>
+        /// <returns></returns>
+        public static List<Node> EncontrarVizinhos(Neuronio  neuronio)
         {
-            for (int i = 0; i < node.peso.Count(); i++)
+            List<Node> Vizinhos = new List<Node>();
+            for (int i = 0; i < Nodes.Count; i++)
             {
-                node.peso[i] = node.peso[i] + taxaAprendizado * (node.valores[i] - node.peso[i]);
-            }
-            return node;
-        }
-
-        public static List<int> EncontrarVizinhos(Node node, List<Node> lista)
-        {
-            List<int> Vizinhos = new List<int>();
-            for (int i = 0; i < lista.Count; i++)
-            {
-                if (DistanciaEuclidiana(node, lista[i]) < Raio)
+                var temp = DistanciaEuclidiana(Nodes[i], neuronio);
+                if (temp < Raio && temp != 0)
                 {
-                    Vizinhos.Add(i);
+                    Vizinhos.Add(Nodes[i]);
                 }
             }
             return Vizinhos;
         }
 
-        //private Node DefinirVencedor()
-        //{
-        //    var bmu = new Node();
-        //    var y = 0.00;
-        //    //Para cada entrada de valor do nó execute os procedimentos abaixo
-        //    for (var i = 0; i < ListNode.Count - 1; i++)
-        //    {
-        //        var x = CalcularDistanciaEuclidiana(listaNodes[i].Value, listaNodes[i].Peso);
-        //        if (!(x < y)) continue;
-        //        bmu = listaNodes[i];
-        //        y = x;
-        //    }
-        //    return bmu;
-        //}
+        /// <summary>
+        /// Método responsável para atualizar os pesos do dado neurônio
+        /// </summary>
+        /// <param name="neuronio"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public static Neuronio AtualizarPesos(Neuronio neuronio, Node node)
+        {
+            for (int i = 0; i < neuronio.pesos.Count(); i++)
+            {
+                neuronio.pesos[i] = neuronio.pesos[i] + (alfa * (node.valores[i] - neuronio.pesos[i]));
+            }
+            return neuronio;
+        }
+
+        /// <summary>
+        /// Método responsável por preencher a lista de neurônios
+        /// </summary>
+        /// <returns></returns>
+        private static List<Neuronio> PreencherNeuronios()
+        {
+            List<Neuronio> neuronios = new List<Neuronio>();
+            Random rnd = new Random(1);
+            for (int i = 0; i < k; i++)
+            {
+                var neuronio = new Neuronio();
+                neuronio.cod = i + 1;
+                neuronio.pesos = new double[Nodes[i].valores.Count()];
+                neuronio.vizinhos = new List<Node>();
+                for (int j = 0; j < neuronio.pesos.Length; j++)
+                {
+                    neuronio.pesos[j] = rnd.NextDouble();
+                }
+                neuronios.Add(neuronio);
+            }
+            return neuronios;
+        }
 
 
+        /// <summary>
+        /// Método responsável por converter os valores dados no data.txt para double
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <returns></returns>
         public static double ConvertToDouble(string valor)
         {
             if (Regex.IsMatch(valor, @"^\."))
@@ -129,16 +137,44 @@ namespace NewSom
             return Convert.ToDouble(valor);
         }
 
-        public static double DistanciaEuclidiana(Node nodeA, Node nodeB)
+
+        /// <summary>
+        /// Método responsável por preencher a lista de Nodes
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static List<Node> PreencherNodes(string path)
+        {
+            StreamReader sr = new StreamReader(path);
+            int ordem = 1;
+            List<Node> Nodes = new List<Node>();
+            while (!sr.EndOfStream)
+            {
+                var node = new Node();
+                node.ordem = ordem;
+                node.valores = sr.ReadLine().Split(';').ToList().ConvertAll(new Converter<string, double>(ConvertToDouble)).ToArray();
+                Nodes.Add(node);
+                ordem++;
+            }
+            sr.Close();
+            return Nodes;
+        }
+
+        /// <summary>
+        /// Método responsável por medir a distância euclidiana
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="neuronio"></param>
+        /// <returns></returns>
+        public static double DistanciaEuclidiana(Node node, Neuronio neuronio)
         {
             double valor = 0;
-            for (int i = 0; i < nodeA.valores.Count(); i++)
+            for (int i = 0; i < node.valores.Count(); i++)
             {
-                valor += Math.Pow((nodeA.valores[i] - nodeB.valores[i]), 2);
+                valor += Math.Pow((node.valores[i] - neuronio.pesos[i]), 2);
             }
             return Math.Sqrt(valor);
         }
-
 
     }
 }
